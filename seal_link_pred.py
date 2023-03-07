@@ -452,7 +452,8 @@ if args.use_valedges_as_input:
         val_edge_index = to_undirected(val_edge_index)
     data.edge_index = torch.cat([data.edge_index, val_edge_index], dim=-1)
     val_edge_weight = torch.ones([val_edge_index.size(1), 1], dtype=int)
-    data.edge_weight = torch.cat([data.edge_weight, val_edge_weight], 0)
+    if args.use_edge_weight:
+        data.edge_weight = torch.cat([data.edge_weight, val_edge_weight], 0)
 
 if args.dataset.startswith('ogbl'):
     evaluator = Evaluator(name=args.dataset)
