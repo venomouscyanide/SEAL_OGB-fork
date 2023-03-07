@@ -426,7 +426,7 @@ if args.dataset.startswith('ogbl'):
 else:
     path = osp.join('dataset', args.dataset)
     dataset = Planetoid(path, args.dataset)
-    split_edge = do_edge_split(dataset, args.fast_split)
+    split_edge = do_edge_split(dataset, args.fast_split, val_ratio=0.10, test_ratio=0.20)
     data = dataset[0]
     data.edge_index = split_edge['train']['edge'].t()
 
