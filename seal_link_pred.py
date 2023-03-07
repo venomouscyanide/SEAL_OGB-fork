@@ -430,7 +430,10 @@ else:
     data = dataset[0]
     data.edge_index = split_edge['train']['edge'].t()
 
-if args.dataset.startswith('ogbl-citation'):
+if args.dataset in ['Cora', 'CiteSeer', 'Pubmed']:
+    args.eval_metric = 'hits'
+    directed = False
+elif args.dataset.startswith('ogbl-citation'):
     args.eval_metric = 'mrr'
     directed = True
 elif args.dataset.startswith('ogbl-vessel'):
@@ -453,6 +456,8 @@ if args.use_valedges_as_input:
 
 if args.dataset.startswith('ogbl'):
     evaluator = Evaluator(name=args.dataset)
+if args.dataset in ['Cora', 'CiteSeer', 'Pubmed']:
+    evaluator = Evaluator(name='ogbl-collab')
 if args.eval_metric == 'hits':
     loggers = {
         'Hits@20': Logger(args.runs, args),
